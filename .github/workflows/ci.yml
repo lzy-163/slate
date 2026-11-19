@@ -39,6 +39,6 @@ jobs:
         if: ${{ !cancelled() && matrix.command == 'test:integration' }}
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.command }}
           path: test-results
           retention-days: 30
