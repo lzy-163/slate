@@ -31,7 +31,13 @@ jobs:
           cache: yarn
 
       - name: Run ${{ matrix.command }}
-        run: yarn && yarn build && yarn ${{ matrix.command }}
+        run: |
+          yarn
+          yarn build
+          if [ "${{ matrix.command }}" = "test:integration" ]; then
+            yarn playwright install --with-deps
+          fi
+          yarn ${{ matrix.command }}
         env:
           CI: true
 
