@@ -13,6 +13,7 @@ jobs:
     # Pin the version to avoid dependency installation issues
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         command:
           - 'test'
@@ -30,8 +31,18 @@ jobs:
           node-version: 22.x
           cache: yarn
 
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Install Playwright browsers
+        if: ${{ matrix.command == 'test:integration' }}
+        run: yarn playwright install --with-deps
+
       - name: Run ${{ matrix.command }}
-        run: yarn && yarn build && yarn ${{ matrix.command }}
+        run: yarn ${{ matrix.command }}
         env:
           CI: true
 
