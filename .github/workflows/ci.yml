@@ -34,6 +34,7 @@ jobs:
         run: yarn && yarn build && yarn ${{ matrix.command }}
         env:
           CI: true
+          NODE_OPTIONS: --no-experimental-strip-types
 
       - name: Upload Playwright test results
         if: ${{ !cancelled() && matrix.command == 'test:integration' }}
